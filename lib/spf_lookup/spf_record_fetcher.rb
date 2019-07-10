@@ -28,6 +28,7 @@ class SPFRecordFetcher
   SUPPORTED_TYPE_CLASS = %w[TXT].freeze
   def type_class(record_type)
     raise ArgumentError unless SUPPORTED_TYPE_CLASS.include?(record_type.upcase)
-    Resolv::DNS::Resource::IN.const_get(record_type.upcase) end
+    Resolv::DNS::Resource::IN.const_get(record_type.upcase)
+  end
 
 end

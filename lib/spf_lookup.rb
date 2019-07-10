@@ -1,8 +1,11 @@
+require "spf_lookup/version"
 require_relative './dns_lookup_counter'
 
-class Domain
-  include Comparable
+module SpfLookup
+  class Error < StandardError; end
+
   attr_reader :domain, :lookup_upper_limit
+
   def initialize(domain, lookup_upper_limit = 10)
     @domain = domain
     @lookup_upper_limit = lookup_upper_limit
@@ -19,4 +22,7 @@ class Domain
   def counter
     @counter ||= DNSLookupCounter.new
   end
+
+
 end
+
