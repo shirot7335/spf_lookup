@@ -1,28 +1,20 @@
 require "spf_lookup/version"
-require_relative './dns_lookup_counter'
+
+require_relative './spf_lookup/dns_lookup_counter'
 
 module SpfLookup
-  class Error < StandardError; end
 
-  attr_reader :domain, :lookup_upper_limit
+  class << self
+    def lookup_count(domain)
+      return SpfLookup::DNSLookupCounter.count_dns_lookup(domain)
+    end
 
-  def initialize(domain, lookup_upper_limit = 10)
-    @domain = domain
-    @lookup_upper_limit = lookup_upper_limit
+    DNS_CONFIG = {option: {} }
+
+    def dns_configure(dns_config = {})
+      DNS_CONFIG[:option] = dns_config
+    end
   end
-
-  def registerable?
-    lookup_count <= @lookup_upper_limit
-  end
-
-  def lookup_count
-    counter.count_dns_lookup(@domain)
-  end
-
-  def counter
-    @counter ||= DNSLookupCounter.new
-  end
-
 
 end
 
