@@ -1,12 +1,12 @@
 require 'resolv'
 
 
-class SpfLookup
+module SpfLookup
   class SPFRecordFetcher
 
     SUPPORTED_TYPE_CLASS = %w[TXT].freeze
 
-    def initialize(dns_conf = {})
+    def initialize(dns_conf = nil)
       @resolver = Resolv::DNS.new(dns_conf)
     end
 
@@ -19,7 +19,9 @@ class SpfLookup
     end
 
     def record_resources(domain, record_type)
-      return @resolver.getresources(domain, type_class(record_type))
+      resources = @resolver.getresources(domain, type_class(record_type))
+      raise Resolv::ResolvError, "Could not lookup '#{domain}'." if resources.empty?
+      return resources
     end
 
     private
