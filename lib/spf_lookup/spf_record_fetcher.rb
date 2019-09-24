@@ -11,7 +11,7 @@ module SpfLookup
     end
 
     def txt_record_values(domain)
-      return txt_record_resources(domain).collect { |resource| resource.strings }
+      return txt_record_resources(domain).collect { |resource| resource.data }
     end
 
     def txt_record_resources(domain)
@@ -20,7 +20,6 @@ module SpfLookup
 
     def record_resources(domain, record_type)
       resources = @resolver.getresources(domain, type_class(record_type))
-      raise Resolv::ResolvError, "Could not lookup '#{domain}'." if resources.empty?
       return resources
     end
 
