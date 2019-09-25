@@ -18,9 +18,9 @@ module SpfLookup
         text_fetcher = -> (obj)    { obj.domain_spec.macro_text }
 
         record_fetcher.txt_record_values(domain).each do |value|
-          next unless Coppertone::Record.record?(value[0])
+          next unless Coppertone::Record.record?(value)
 
-          record = Coppertone::Record.new(value[0])
+          record = Coppertone::Record.new(value)
           lookup_count += record.dns_lookup_term_count
 
           return lookup_count if lookup_count > LOOKUP_LIMIT_SPECIFIED_BY_RFC7208
