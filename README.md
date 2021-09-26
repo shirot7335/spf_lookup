@@ -1,7 +1,6 @@
 # SpfLookup
 
-RFC specify a limit of 10 DNS lookups for SPF.
-https://datatracker.ietf.org/doc/html/rfc7208#section-4.6.4
+RFC specify a limit of 10 DNS lookups for SPF. https://datatracker.ietf.org/doc/html/rfc7208#section-4.6.4
 
 SpfLookup will count the number of SPF lookups for a given domain.
 
@@ -21,9 +20,7 @@ Or install it yourself as:
 
     $ gem install spf_lookup
 
-## Usage
-
-TODO: Write usage instructions here
+## Example
 
 ```
 gem 'spf_lookup'
