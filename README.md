@@ -1,8 +1,17 @@
 # SpfLookup
 
+SpfLookup will count the number of SPF lookups for a given domain.
+
+## Overview
+
 RFC specify a limit of 10 DNS lookups for SPF. https://datatracker.ietf.org/doc/html/rfc7208#section-4.6.4
 
-SpfLookup will count the number of SPF lookups for a given domain.
+Therefore, when configuring SPF, you need to check the number of SPF lookups for target domain and make sure that the number of lookups after configuration is within the upper limit set by the RFC.
+
+SpfLookup will count the nubmer of SPF lookups by passing the domain,
+so you can reduce the work of counting the number of SPF lookups.
+
+
 
 ## Installation
 
@@ -22,7 +31,9 @@ Or install it yourself as:
 
 ## Example
 
-```
+```ruby
+require "spf_lookup"
+
 domain = "sample.example.com"
 
 resolv_conf = {
@@ -48,7 +59,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/spf_lookup. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/shirot7335/spf_lookup. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## WIP
 * test
