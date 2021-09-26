@@ -23,8 +23,6 @@ Or install it yourself as:
 ## Example
 
 ```
-gem 'spf_lookup'
-
 domain = "sample.example.com"
 
 resolv_conf = {
