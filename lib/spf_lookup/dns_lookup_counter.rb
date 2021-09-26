@@ -12,6 +12,10 @@ module SpfLookup
         return __count__(domain, lookup_count = 0, depth = 1)
       end
 
+      def count_is_valid?(domain)
+        return self.count_dns_lookup(domain) <= LOOKUP_LIMIT_SPECIFIED_BY_RFC7208
+      end
+
       private
       def __count__(domain, lookup_count = 0, depth = 0)
         counter      = -> (domain) { __count__(domain, lookup_count, depth+1) }

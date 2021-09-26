@@ -43,7 +43,7 @@ resolv_conf = {
 # SpfLookup.dns_configure argumets is the same as the one passed to the initializer of Resolv::DNS
 SpfLookup.dns_configure(resolv_conf)
 
-lookup_count = SpfLookup.lookup_count(domain)
+lookup_count = SpfLookup.count(domain)
 
 if lookup_count > SpfLookup::DNSLookupCounter::LOOKUP_LIMIT_SPECIFIED_BY_RFC7208
   puts "Invalid SPF lookup count!"

@@ -9,8 +9,12 @@ module SpfLookup
   #   {nameserver: '8.8.8.8'}
   DNS_CONFIG = {option: nil}
   class << self
-    def lookup_count(domain)
+    def count(domain)
       return SpfLookup::DNSLookupCounter.count_dns_lookup(domain)
+    end
+
+    def count_is_valid?(domain)
+      return SpfLookup::DNSLookupCounter.count_is_valid?(domain)
     end
 
     def dns_configure(dns_config = nil)
