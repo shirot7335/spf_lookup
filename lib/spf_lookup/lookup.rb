@@ -1,24 +1,14 @@
 require 'coppertone'
-require_relative './spf_record_fetcher'
-require_relative './result'
+require_relative './txt_record_fetcher'
+require_relative './spf_record'
 require_relative './error'
 
 module SpfLookup
-  class DNSLookupCounter
-
-    LOOKUP_LIMIT_SPECIFIED_BY_RFC7208 = 10
+  class Lookup
 
     class << self
-      def count(domain)
-        count_dns_lookup_0(domain)
-      end
-
-      def result(domain)
+      def run(domain)
         return dns_lookup(domain)
-      end
-
-      def count_is_valid?(domain)
-        return self.count(domain) <= LOOKUP_LIMIT_SPECIFIED_BY_RFC7208
       end
 
       private
@@ -26,42 +16,16 @@ module SpfLookup
       def dns_lookup(domain)
         spf_record = find_spf_record(domain)
 
-        result = Result.new
-        result.domain     = domain
-        result.spf_record = spf_record.to_s
-        result.lookup_term_count = spf_record&.dns_lookup_term_count || 0
-
         includes = lookup_target_domains(spf_record).map {|_domain|
           dns_lookup(_domain)
         }
-        result.includes = includes
 
-        return result
-      end
-
-
-
-
-
-
-
-
-
-
-
-
-      def count_dns_lookup_0(domain)
-        return count_dns_lookup(domain, 0)
-      end
-
-      def count_dns_lookup(domain, count)
-        spf_record = find_spf_record(domain)
-
-        _count = lookup_target_domains(spf_record).inject(count) {|memo, _domain|
-          memo = count_dns_lookup(_domain, memo)
-        }
-
-        return _count + (spf_record&.dns_lookup_term_count || 0)
+        return SpfRecord.new(
+          domain,
+          spf_record&.to_s,
+          includes,
+          spf_record&.dns_lookup_term_count
+        )
       end
 
       def lookup_target_domains(spf_record)
@@ -90,7 +54,7 @@ module SpfLookup
       end
 
       def record_fetcher
-        @fetcher ||= SPFRecordFetcher.new(SpfLookup::DNS_CONFIG[:option])
+        @fetcher ||= TXTRecordFetcher.new(SpfLookup::DNS_CONFIG[:option])
       end
     end
   end

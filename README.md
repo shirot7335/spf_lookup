@@ -43,9 +43,29 @@ resolv_conf = {
 # SpfLookup.dns_configure argumets is the same as the one passed to the initializer of Resolv::DNS
 SpfLookup.dns_configure(resolv_conf)
 
+
+# Retrive spf record set.
+record_set = SpfLookup.retrieve_record_set(domain)
+record_set_hash = record_set.to_hash
+
+## record set information
+puts record_set_hash[:lookup_term_count]
+puts record_set_hash[:domain]
+puts record_set_hash[:record_value]
+puts record_set_hash[:includes]
+
+puts record_set_hash[:includes].first[:lookup_term_count]
+puts record_set_hash[:includes].first[:domain]
+puts record_set_hash[:includes].first[:record_value]
+puts record_set_hash[:includes].first[:includes]
+
+# Lookup count check.
+## If you want to use "retrieve_record_set" method, use this.
+lookup_count = record_set.lookup_count
+## If you DON'T want to use  "retrieve_record_set" method, use this.
 lookup_count = SpfLookup.lookup_count(domain)
 
-if lookup_count > SpfLookup::DNSLookupCounter::LOOKUP_LIMIT_SPECIFIED_BY_RFC7208
+if lookup_count > SpfLookup::LOOKUP_LIMIT_SPECIFIED_BY_RFC7208
   puts "Invalid SPF lookup count!"
 end
 

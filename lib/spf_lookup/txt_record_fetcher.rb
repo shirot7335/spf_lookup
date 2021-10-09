@@ -2,7 +2,7 @@ require 'resolv'
 
 
 module SpfLookup
-  class SPFRecordFetcher
+  class TXTRecordFetcher
 
     SUPPORTED_TYPE_CLASS = %w[TXT].freeze
 

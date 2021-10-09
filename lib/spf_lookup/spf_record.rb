@@ -1,13 +1,15 @@
+require "json"
+
 module SpfLookup
-  class Result
-    attr_accessor :domain, :spf_record, :includes
+  class SpfRecord
+    attr_accessor :domain, :record_value, :includes
     attr_accessor :lookup_term_count
 
-    def initialize
-      @domain     = ""
-      @spf_record = ""
-      @includes   = []
-      @lookup_term_count = 0
+    def initialize(domain, record_value, includes, lookup_term_count)
+      @domain            = domain || ""
+      @record_value      = record_value || ""
+      @includes          = includes || []
+      @lookup_term_count = lookup_term_count || 0
     end
 
     def lookup_count
@@ -16,9 +18,9 @@ module SpfLookup
 
     def to_hash
       return {
-        domain:     @domain,
-        spf_record: @spf_record,
-        includes:   includes_to_hash,
+        domain:            @domain,
+        record_value:      @record_value,
+        includes:          includes_to_hash,
         lookup_term_count: @lookup_term_count
       }
     end
@@ -42,9 +44,7 @@ module SpfLookup
     end
 
     def includes_to_hash
-      return includes.map {|result|
-        result.to_hash
-      }
+      return includes.map {|result| result.to_hash }
     end
   end
 
