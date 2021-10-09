@@ -8,26 +8,33 @@ module SpfLookup
     LOOKUP_LIMIT_SPECIFIED_BY_RFC7208 = 10
 
     class << self
-      def count_dns_lookup(domain)
-        spf_record = find_spf_record(domain)
-
-        domains = fetch_lookup_target_domains(spf_record)
-
-        _lookup_count = spf_record.dns_lookup_term_count
-        domains.compact.each do |domain|
-          _lookup_count += count_dns_lookup(domain)
-        end
-
-        return _lookup_count
+      def count(domain)
+        count_dns_lookup_0(domain)
       end
 
       def count_is_valid?(domain)
-        return self.count_dns_lookup(domain) <= LOOKUP_LIMIT_SPECIFIED_BY_RFC7208
+        return self.count(domain) <= LOOKUP_LIMIT_SPECIFIED_BY_RFC7208
       end
 
       private
 
-      def fetch_lookup_target_domains(spf_record)
+      def count_dns_lookup_0(domain)
+        return count_dns_lookup(domain, 0)
+      end
+
+      def count_dns_lookup(domain, count)
+        spf_record = find_spf_record(domain)
+
+        _count = lookup_target_domains(spf_record).inject(count) {|memo, _domain|
+          memo = count_dns_lookup(_domain, memo)
+        }
+
+        return _count + (spf_record&.dns_lookup_term_count || 0)
+      end
+
+      def lookup_target_domains(spf_record)
+        return [] if spf_record.blank?
+
         domain_fetcher = -> (obj) { obj.domain_spec.macro_text }
 
         domains = spf_record.includes.each_with_object([]) { |include_value, memo|
@@ -35,7 +42,7 @@ module SpfLookup
         }
         domains << domain_fetcher.(spf_record.redirect) unless spf_record.redirect.nil?
 
-        return domains
+        return domains.compact
       end
 
       def find_spf_record(domain)
@@ -43,14 +50,11 @@ module SpfLookup
           memo << Coppertone::Record.new(txt_record_value) if Coppertone::Record.record?(txt_record_value)
         }
 
-        case spf_record.length
-        when 1 then
-          return spf_record.first
-        when 0 then
-          raise SpfLookup::SpfRecordNotFound.new("#{domain} does not have an spf record.")
-        else
+        if spf_record.length > 1
           raise SpfLookup::MultipleSpfRecordError.new("There must be only one SPF record in the same domain.")
         end
+
+        return spf_record.first
       end
 
       def record_fetcher
