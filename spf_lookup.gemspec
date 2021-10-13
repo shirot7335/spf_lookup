@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{lookup counter for SPF registration.}
   spec.description   = %q{SpfLookup will count the number of SPF lookups for a given domain.}
   spec.homepage      = "https://github.com/shirot7335/spf_lookup"
-  spec.license       = "Confidential"
+  spec.license       = "MIT"
   spec.required_ruby_version = '>= 2.7.0'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
