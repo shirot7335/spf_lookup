@@ -1,3 +1,3 @@
 module SpfLookup
-  VERSION = "0.1.2a"
+  VERSION = "0.1.2b"
 end
