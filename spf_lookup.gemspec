@@ -7,11 +7,11 @@ Gem::Specification.new do |spec|
   spec.name          = "spf_lookup"
   spec.version       = SpfLookup::VERSION
   spec.authors       = ["Ryouichi Suganuma"]
-  spec.email         = ["ryoichi.suganuma@satori.team"]
+  spec.email         = ["shirot.white4624@gmail.com"]
 
   spec.summary       = %q{lookup counter for SPF registration.}
-  #spec.description   = %q{TODO: Write a longer description or delete this line.}
-  #spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.description   = %q{SpfLookup will count the number of SPF lookups for a given domain.}
+  spec.homepage      = "https://github.com/shirot7335/spf_lookup"
   spec.license       = "Confidential"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
